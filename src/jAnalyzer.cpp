@@ -445,7 +445,9 @@ void readData (string filename, UInt_t ref_channel, bool verbose, bool uniform)
               eventcounter++;
               if (abort_request) break;
 
-              if (verbose || strlen(error)>0) 
+              //in verbose mode, the detailed output is not paused, the user can pipe it into a file if he wants
+              //however, if there was an error, the user should be able to investigate directly -> pause
+              if (strlen(error)>0) 
               {
                      printf(" Hit Enter to continue.\n");
                      getchar();
