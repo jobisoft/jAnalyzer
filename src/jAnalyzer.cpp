@@ -283,8 +283,8 @@ void readData (string filename, UInt_t ref_channel, bool verbose, bool uniform)
        ifstream datfile;
        datfile.open (filename.c_str(), ios::in | ios::binary);
        
-       TH2* DNLs_raw = new TH2D("DNLs_raw","bin hit distribution",maxchannels,-0.5,maxchannels-0.5,maxbins,-0.5,maxbins-0.5);
-       TH2* DNLs_merged = new TH2D("DNLs_merged","bin hit distribution (merged)",maxchannels,-0.5,maxchannels-0.5,maxbins,-0.5,maxbins-0.5);
+       TH2* DNLs_raw = new TH2D("DNLs_raw","differential nonlinearity",maxchannels,-0.5,maxchannels-0.5,maxbins,-0.5,maxbins-0.5);
+       TH2* DNLs_merged = new TH2D("DNLs_merged","differential nonlinearity (merged)",maxchannels,-0.5,maxchannels-0.5,maxbins,-0.5,maxbins-0.5);
      
        vector<eventdata> events;
        int eventcounter = 0;    
@@ -465,7 +465,7 @@ void readData (string filename, UInt_t ref_channel, bool verbose, bool uniform)
        printf("Calculating calibration table: ");  fflush(stdout); 
 
        Double_t calibration[maxchannels][maxbins];
-       TH2* INLs = new TH2D("INLs","integrated width of bins in ps",maxchannels,-0.5,maxchannels-0.5,maxbins,-0.5,maxbins-0.5);
+       TH2* INLs = new TH2D("INLs","integrated and normalized nonlinearity",maxchannels,-0.5,maxchannels-0.5,maxbins,-0.5,maxbins-0.5);
        
        for (int ch=1; ch<=maxchannels; ch++) 
        {
