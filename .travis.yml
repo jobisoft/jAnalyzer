@@ -50,4 +50,4 @@ script:
   - make install
   - cd ${TRAVIS_BUILD_DIR}/install
   - jAnalyzer
-  - jAnalyzer ${TRAVIS_BUILD_DIR}/examples/run*.dat -r 1 -v -u
+  - jAnalyzer ${TRAVIS_BUILD_DIR}/examples/run*.dat -r 1 -u
