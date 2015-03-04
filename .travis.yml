@@ -47,7 +47,7 @@ env:
 script:
   - env
   - make
-# - make install
-# - cd ${TRAVIS_BUILD_DIR}/install
-# - jAnalyzer
-# - jAnalyzer ${TRAVIS_BUILD_DIR}/examples/run*.dat -r 1 -v -u
+  - make install
+  - cd ${TRAVIS_BUILD_DIR}/install
+  - jAnalyzer
+  - jAnalyzer ${TRAVIS_BUILD_DIR}/examples/run*.dat -r 1 -v -u
