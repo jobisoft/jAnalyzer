@@ -555,7 +555,7 @@ void readData (string filename, UInt_t ref_channel, bool verbose, bool uniform)
        
        printf("Done.\n");      
 
-       if (errorOnTriggerTime) printf("  ErrorOnTriggerTime: At least one event has been skipped, because the triggerChannel &d did not have exactly one hit. Something is wrong.\n",trigger_channel);       
+       if (errorOnTriggerTime) printf("  ErrorOnTriggerTime: At least one event has been skipped, because the triggerChannel %d did not have exactly one hit. Something is wrong.\n",trigger_channel);
        if (errorOnRefTime) printf("  ErrorOnRefTime: At least one event has been skipped, because the refChannel %d did not have a hit.\n",ref_channel);
        
 
