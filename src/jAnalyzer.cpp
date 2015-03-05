@@ -623,7 +623,7 @@ int main (int argc, char **argv)
         } else {
                 cout << "\tusage: jAnalyzer filename [options]" << endl << endl;
                 cout << "If no options are provided, a list of all available options is shown." << endl << endl;
-                exit(1);
+                exit(0);
         }
         
 
