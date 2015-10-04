@@ -1,32 +1,59 @@
 language: cpp
 
+sudo: false
+
 compiler:
   - clang
   - gcc
 
-before_install:
-  # g++ 4.8 on linux
-  - if [ "$CXX" == "g++" ]; then sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test; fi
-
-  # clang 3.4 - already with travis
-  #- if [ "$CXX" == "clang++" ]; then sudo add-apt-repository -y ppa:h-rayflood/llvm; fi
-
-  - sudo apt-get update -qq
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-5
+      - x11-common
+      - libx11-6
+      - x11-utils
+      - libX11-dev
+      - libgsl0-dev
+      - gsl-bin
+      - libxpm-dev
+      - libxft-dev
+      - gfortran
+      - build-essential
+      - libjpeg-turbo8-dev
+      - libjpeg8-dev
+      - libjpeg-dev
+      - libtiff4-dev
+      - libxml2-dev
+      - libssl-dev
+      - libgnutls-dev
+      - libgmp3-dev
+      - libpng12-dev
+      - libldap2-dev
+      - libkrb5-dev
+      - freeglut3-dev
+      - libfftw3-dev
+      - python-dev
+      - libmysqlclient-dev
+      - libgif-dev
+      - libiodbc2
+      - libiodbc2-dev
+      - subversion
+      - libxext-dev
+      - libxmu-dev
+      - libimlib2
+      - gccxml
 
 env:
   - ROOT_VERSION=5.34.26 PATH=${PATH}:${TRAVIS_BUILD_DIR}/install/bin LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${TRAVIS_BUILD_DIR}/install/lib
 
 install:
-  # g++ 4.8 on linux
-  - if [ "$CXX" = "g++" ]; then sudo apt-get install -qq g++-4.8; fi
-  - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8"; fi
-
-  # clang 3.4 - already with travis
-  #- if [ "$CXX" == "clang++" ]; then sudo apt-get install --allow-unauthenticated -qq clang-3.4; fi
-  #- if [ "$CXX" == "clang++" ]; then export CXX="clang++-3.4"; fi
+  # g++-5 on linux
+  - if [ "$CXX" = "g++" ]; then export CXX="g++-5"; fi
 
   # install ROOT. Not in Ubuntu 12.04, only later again... Travis still uses stone-aged 12.04. 
-  - sudo apt-get install x11-common libx11-6 x11-utils libX11-dev libgsl0-dev gsl-bin libxpm-dev libxft-dev gfortran build-essential libjpeg-turbo8-dev libjpeg8-dev libjpeg8-dev libjpeg-dev libtiff4-dev libxml2-dev libssl-dev libgnutls-dev libgmp3-dev libpng12-dev libldap2-dev libkrb5-dev freeglut3-dev libfftw3-dev python-dev libmysqlclient-dev libgif-dev libiodbc2 libiodbc2-dev subversion libxext-dev libxmu-dev libimlib2 gccxml
   - mkdir root
   - cd root
   - wget http://root.cern.ch/download/root_v${ROOT_VERSION}.source.tar.gz
