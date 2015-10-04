@@ -46,8 +46,12 @@ addons:
       - libimlib2
       - gccxml
 
+cache:
+  directories:
+    - $HOME/.ccache
+
 env:
-  - ROOT_VERSION=5.34.34 PATH=${PATH}:${TRAVIS_BUILD_DIR}/install/bin LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${TRAVIS_BUILD_DIR}/install/lib
+  - ROOT_VERSION=5.34.34 PATH=/usr/lib/ccache:${PATH}:${TRAVIS_BUILD_DIR}/install/bin LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${TRAVIS_BUILD_DIR}/install/lib
 
 install:
   # g++-5 on linux
