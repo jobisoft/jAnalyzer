@@ -45,7 +45,6 @@ using namespace std;
 
 static const int maxchannels = 100;
 static const int maxbins = 256;
-static const int trigger_channel = 0;
 
 typedef struct
 {
@@ -121,7 +120,7 @@ float voltage_from_adc_value(short int adc_value){
  //*   P A R A M E T E R   H A N D L I N G   *//
  //* * * * * * * * * * * * * * * * * * * * * *//
 
-enum PNAME {ERROR,REFCHANNEL,VERBOSE,UNIFORM};
+enum PNAME {ERROR,TRGCHANNEL,REFCHANNEL,VERBOSE,UNIFORM};
 
 class parameterHandle {
         private:
@@ -275,7 +274,7 @@ Double_t getTrueTime(UInt_t rawTdcValue, UInt_t channel, Double_t calibration[ma
 
 
 
-void readData (string filename, UInt_t ref_channel, bool verbose, bool uniform)
+void readData (string filename, UInt_t ref_channel, UInt_t trigger_channel, bool verbose, bool uniform)
 {
        //Read file and store data in memory
        //----------------------------------
@@ -427,7 +426,7 @@ void readData (string filename, UInt_t ref_channel, bool verbose, bool uniform)
               
               //have there been errors?
               char error[2048];
-              sprintf(error,"");
+              sprintf(error,"%s", "");
               
               if (header1_not_first || !header1_found) sprintf(error, "%s  - header1 was not (only) the first word\n",error);
               if (header_has_wrong_entries_count) sprintf(error, "%s  - number of entries found in header1 does not match number of entries found in eventfifo\n",error);
@@ -525,7 +524,7 @@ void readData (string filename, UInt_t ref_channel, bool verbose, bool uniform)
               if (event->hitsPerChannel[ref_channel].size() > 0) refTime = getTrueTime(event->hitsPerChannel[ref_channel].at(0),ref_channel,calibration,uniform);
               else {errorOnRefTime = true; continue;}
               
-              for (int ch = 0; ch < 100; ch++)
+              for (UInt_t ch = 0; ch < 100; ch++)
               {
                      //Fill hits per event
                      hitsperevent->Fill(ch,event->hitsPerChannel[ch].size());
@@ -631,9 +630,10 @@ int main (int argc, char **argv)
         parameterHandle *params = new parameterHandle();
         params->setIntro("\tusage: jAnalyzer filename [options]");
         params->add(ERROR              ,false ,""              ,""     ,"");
-        params->add(REFCHANNEL         ,true  ,"--refchannel"  ,"-r"   ,"sets the refchannel in this dataset");
-        params->add(VERBOSE            ,false ,"--verbose"     ,"-v"   ,"explain each dataword found");
-        params->add(UNIFORM            ,false ,"--uniformbins" ,"-u"   ,"randomize bin times uniformly to avoid binning artifacts");
+        params->add(TRGCHANNEL         ,true  ,"--triggerchannel"  ,"-t"   ,"sets the trigger channel in this dataset");
+        params->add(REFCHANNEL         ,true  ,"--refchannel    "  ,"-r"   ,"sets the refchannel in this dataset");
+        params->add(VERBOSE            ,false ,"--verbose       "  ,"-v"   ,"explain each dataword found");
+        params->add(UNIFORM            ,false ,"--uniformbins   "  ,"-u"   ,"randomize bin times uniformly to avoid binning artifacts");
         
         
         
@@ -658,6 +658,7 @@ int main (int argc, char **argv)
         }              
         if (argc <= 2 || valid == 0) params->set(ERROR); 
 
+        params->allow(TRGCHANNEL);
         params->allow(REFCHANNEL);                       
         params->allow(VERBOSE);
         params->allow(UNIFORM);
@@ -667,7 +668,8 @@ int main (int argc, char **argv)
         
         if (params->check()) 
         {
-                readData (filename, params->get(REFCHANNEL), params->isSet(VERBOSE), params->isSet(UNIFORM));
+                if (!params->isSet(TRGCHANNEL)) params->storeValue(TRGCHANNEL,string("0"));                                
+                readData (filename, params->get(REFCHANNEL), params->get(TRGCHANNEL), params->isSet(VERBOSE), params->isSet(UNIFORM));
         }
            
         return 0;
